@@ -18,16 +18,28 @@ namespace CBM_API.Entities
         public int? DepartmentID { get; set; }
         public Department? Department { get; set; }
         public List<Role>? Roles { get; } = new();
+        
+        
+        
         public Account(int id, string name, int departmentID, string password)//,  DateTime? deletedAt)
         {
             Id = id;
             Name = name;
             DepartmentID = departmentID;
             Password = password;
+            CreatedAt = DateTime.Now;
+            CreatedBy = "System";
         }
 
         public Account()
         {
         }
+        // JsonIgnore 
+        public DateTime? CreatedAt { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public string? DeletedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 }

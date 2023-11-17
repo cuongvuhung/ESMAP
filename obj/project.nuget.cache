@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mC+ZPLTatpHet+g1vtJU05LfSj4wU9n5e8hdvjM3iOJwJ4kDl2wGne7/FfBUAE/EqgE6JjqqWGivfiX4nYrqZw==",
+  "dgSpecHash": "3MZH68CEkTGcyixz9WvV1NjgEWvKOyzm+etjGmlIlqOHRGEf3why6AdfSb1FJOU1dG9E+8WGTcMSfxcCtwbiRQ==",
   "success": true,
-  "projectFilePath": "D:\\SynologyDrive\\Source\\CBM-API\\CBM-API.csproj",
+  "projectFilePath": "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\cuongvh\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\cuongvh\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
