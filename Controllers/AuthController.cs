@@ -44,7 +44,6 @@ namespace CBM_API.Controllers
             {
                 return BadRequest(e.Message);
             }            
-                  
         }
 
         [HttpPost("login-ldap")]
@@ -54,7 +53,6 @@ namespace CBM_API.Controllers
             var config = new ConfigurationBuilder()
               .SetBasePath(Directory.GetCurrentDirectory())
               .AddJsonFile("appsettings.json").Build();
-
 
             try
             {
@@ -90,8 +88,10 @@ namespace CBM_API.Controllers
                         }
                         catch
                         {
-                            user.DepartmentID = 19;
+                            user.DepartmentID = 20;
                         }
+                        user.UpdatedAt = DateTime.Now;
+                        user.UpdatedBy = "System";
                         await _context.SaveChangesAsync();
                         response.Status = "200";
                         response.Message = "LDAP Author";
@@ -104,6 +104,8 @@ namespace CBM_API.Controllers
                         user.Email = entry.GetAttribute("mail").StringValue;                        
                         user.FullName = entry.GetAttribute("cn").StringValue;
                         user.Password = hashedPwd;
+                        user.CreatedAt = DateTime.Now;
+                        user.CreatedBy = "System";
                         //user.IsRegular = false;                        
                         string departmentName = entry.GetAttribute("department").StringValue;
                         try
@@ -115,13 +117,15 @@ namespace CBM_API.Controllers
                         }
                         catch
                         {
-                            user.DepartmentID = 19;
+                            user.DepartmentID = 20;
                         }                        
                         await _context.Accounts.AddAsync(user);
                         await _context.SaveChangesAsync();
                         AccountRole ar = new AccountRole();
                         ar.AccountId = user.Id;
                         ar.RoleId = 2;
+                        ar.CreatedBy = "System";
+                        ar.CreatedAt = DateTime.Now;
                         Console.WriteLine(user.Id);
                         await _context.AccountRoles.AddAsync(ar);
                         await _context.SaveChangesAsync();

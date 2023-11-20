@@ -15,11 +15,19 @@ namespace CBM_API.Entities
         {
             Id = id;
             Name = name;
+            CreatedAt = DateTime.Now;
+            CreatedBy = "System";
         }
 
         public Role()
         {
         }
-
+        // JsonIgnore 
+        [JsonIgnore] public DateTime? CreatedAt { get; set; }
+        [JsonIgnore] public string? CreatedBy { get; set; }
+        [JsonIgnore] public DateTime? DeletedAt { get; set; }
+        [JsonIgnore] public string? DeletedBy { get; set; }
+        [JsonIgnore] public DateTime? UpdatedAt { get; set; }
+        [JsonIgnore] public string? UpdatedBy { get; set; }
     }
 }

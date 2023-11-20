@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SynologyDrive\\Source\\CBM-API\\CBM-API.csproj": {}
+    "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj": {}
   },
   "projects": {
-    "D:\\SynologyDrive\\Source\\CBM-API\\CBM-API.csproj": {
+    "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SynologyDrive\\Source\\CBM-API\\CBM-API.csproj",
+        "projectUniqueName": "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
         "projectName": "CBM-API",
-        "projectPath": "D:\\SynologyDrive\\Source\\CBM-API\\CBM-API.csproj",
+        "projectPath": "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
         "packagesPath": "C:\\Users\\cuongvh\\.nuget\\packages\\",
-        "outputPath": "D:\\SynologyDrive\\Source\\CBM-API\\obj\\",
+        "outputPath": "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
