@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CBM_API.Entities;
@@ -15,10 +15,10 @@ namespace CBM_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExambleController : ControllerBase
+    public class DeviceTypeController : ControllerBase
     {
         public ApplicationDbContext _context;
-        public ExambleController(ApplicationDbContext context)
+        public DeviceTypeController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -28,9 +28,9 @@ namespace CBM_API.Controllers
         {
             try
             {
-                var item = await (from rec in _context.Accounts
+                var item = await (from rec in _context.DeviceTypes
                                   where rec.DeletedAt == null
-                                  select rec)
+                                  select rec)                                      
                                       .ToListAsync();
 
                 return Ok(item);
@@ -43,19 +43,19 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> AddItem(Account item)
+        public async Task<IActionResult> AddItem(DeviceType item)
         {
             try
             {
-                Account? itemExist = await (from rec in _context.Accounts
-                                            where rec.Name == item.Name
-                                            select rec).FirstOrDefaultAsync();
+                DeviceType? itemExist = await (from rec in _context.DeviceTypes
+                                               where rec.Name == item.Name
+                                       select rec).FirstOrDefaultAsync();
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
                     itemExist.CreatedAt = DateTime.Now;
                     itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
-                    _context.Accounts.Add(item);
+                    _context.DeviceTypes.Add(item);
                     return Ok(item);
                 }
 
@@ -68,13 +68,13 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(Account item)
+        public async Task<IActionResult> UpdateItem(DeviceType item)
         {
             try
             {
-                Account? itemExist = await (from rec in _context.Accounts
-                                            where rec.Id == item.Id
-                                            select rec).FirstOrDefaultAsync();
+                DeviceType? itemExist = await (from rec in _context.DeviceTypes
+                                               where rec.Id == item.Id
+                                       select rec).FirstOrDefaultAsync();
                 if (itemExist == null)
                 {
                     return BadRequest();
@@ -84,7 +84,6 @@ namespace CBM_API.Controllers
                     itemExist.UpdatedAt = DateTime.Now;
                     itemExist.UpdatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     itemExist.Name = item.Name;
-                    itemExist.FullName = item.FullName;
                     _context.SaveChanges();
                     return Ok(item);
                 }
@@ -101,9 +100,9 @@ namespace CBM_API.Controllers
         {
             try
             {
-                Account? item = await (from rec in _context.Accounts
-                                       where rec.Id == id
-                                       select rec).FirstOrDefaultAsync();
+                DeviceType? item = await (from rec in _context.DeviceTypes
+                                          where rec.Id == id
+                                      select rec).FirstOrDefaultAsync();
                 item.DeletedAt = DateTime.Now;
                 item.DeletedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                 _context.SaveChanges();
@@ -116,3 +115,4 @@ namespace CBM_API.Controllers
         }
     }
 }
+
