@@ -10,15 +10,16 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Minio.DataModel;
+using System.Data;
 
 namespace CBM_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExambleController : ControllerBase
+    public class RoleController : ControllerBase
     {
         public ApplicationDbContext _context;
-        public ExambleController(ApplicationDbContext context)
+        public RoleController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -28,7 +29,7 @@ namespace CBM_API.Controllers
         {
             try
             {
-                var item = await (from rec in _context.Accounts
+                var item = await (from rec in _context.Roles
                                   where rec.DeletedAt == null
                                   select rec)                                      
                                       .ToListAsync();
@@ -43,19 +44,19 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> AddItem(Account item)
+        public async Task<IActionResult> AddItem(Role item)
         {
             try
             {
-                Account? itemExist = await (from rec in _context.Accounts
-                                       where rec.Name == item.Name
+                Role? itemExist = await (from rec in _context.Roles
+                                         where rec.Name == item.Name
                                        select rec).FirstOrDefaultAsync();
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
                     itemExist.CreatedAt = DateTime.Now;
                     itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
-                    _context.Accounts.Add(item);
+                    _context.Roles.Add(item);
                     return Ok(item);
                 }
 
@@ -68,12 +69,12 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(Account item)
+        public async Task<IActionResult> UpdateItem(Role item)
         {
             try
             {
-                Account? itemExist = await (from rec in _context.Accounts
-                                       where rec.Id == item.Id
+                Role? itemExist = await (from rec in _context.Roles
+                                         where rec.Id == item.Id
                                        select rec).FirstOrDefaultAsync();
                 if (itemExist == null)
                 {
@@ -84,7 +85,6 @@ namespace CBM_API.Controllers
                     itemExist.UpdatedAt = DateTime.Now;
                     itemExist.UpdatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     itemExist.Name = item.Name;
-                    itemExist.FullName = item.FullName;
                     _context.SaveChanges();
                     return Ok(item);
                 }
@@ -101,8 +101,8 @@ namespace CBM_API.Controllers
         {
             try
             {
-                Account? item = await (from rec in _context.Accounts
-                                      where rec.Id == id
+                Role? item = await (from rec in _context.Roles
+                                    where rec.Id == id
                                       select rec).FirstOrDefaultAsync();
                 item.DeletedAt = DateTime.Now;
                 item.DeletedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;

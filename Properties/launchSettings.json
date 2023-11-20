@@ -3,10 +3,12 @@
     "CBM-API": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:14886;http://localhost:14887",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:14886;http://localhost:14887"
+      "dotnetRunMessages": true
     }
   }
 }

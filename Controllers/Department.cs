@@ -15,10 +15,10 @@ namespace CBM_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExambleController : ControllerBase
+    public class DepartmentController : ControllerBase
     {
         public ApplicationDbContext _context;
-        public ExambleController(ApplicationDbContext context)
+        public DepartmentController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -28,9 +28,9 @@ namespace CBM_API.Controllers
         {
             try
             {
-                var item = await (from rec in _context.Accounts
-                                  where rec.DeletedAt == null
-                                  select rec)                                      
+                var item = await (from department in _context.Departments
+                                  where department.DeletedAt == null
+                                  select department)                                      
                                       .ToListAsync();
 
                 return Ok(item);
@@ -43,19 +43,19 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> AddItem(Account item)
+        public async Task<IActionResult> AddItem(Department item)
         {
             try
             {
-                Account? itemExist = await (from rec in _context.Accounts
-                                       where rec.Name == item.Name
-                                       select rec).FirstOrDefaultAsync();
+                Department? itemExist = await (from department in _context.Departments
+                                               where department.Name == item.Name
+                                       select department).FirstOrDefaultAsync();
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
                     itemExist.CreatedAt = DateTime.Now;
                     itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
-                    _context.Accounts.Add(item);
+                    _context.Departments.Add(item);
                     return Ok(item);
                 }
 
@@ -68,13 +68,13 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(Account item)
+        public async Task<IActionResult> UpdateItem(Department item)
         {
             try
             {
-                Account? itemExist = await (from rec in _context.Accounts
-                                       where rec.Id == item.Id
-                                       select rec).FirstOrDefaultAsync();
+                Department? itemExist = await (from department in _context.Departments
+                                               where department.Id == item.Id
+                                       select department).FirstOrDefaultAsync();
                 if (itemExist == null)
                 {
                     return BadRequest();
@@ -84,7 +84,7 @@ namespace CBM_API.Controllers
                     itemExist.UpdatedAt = DateTime.Now;
                     itemExist.UpdatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     itemExist.Name = item.Name;
-                    itemExist.FullName = item.FullName;
+                    itemExist.Description = item.Description;
                     _context.SaveChanges();
                     return Ok(item);
                 }
@@ -101,9 +101,9 @@ namespace CBM_API.Controllers
         {
             try
             {
-                Account? item = await (from rec in _context.Accounts
-                                      where rec.Id == id
-                                      select rec).FirstOrDefaultAsync();
+                Department? item = await (from department in _context.Departments
+                                          where department.Id == id
+                                      select department).FirstOrDefaultAsync();
                 item.DeletedAt = DateTime.Now;
                 item.DeletedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                 _context.SaveChanges();

@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj": {}
+    "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj": {
+    "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
+        "projectUniqueName": "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
         "projectName": "CBM-API",
-        "projectPath": "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
+        "projectPath": "C:\\Users\\cuongvh\\source\\repos\\NPCETC-CNTT\\CBM-API\\CBM-API.csproj",
         "packagesPath": "C:\\Users\\cuongvh\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\cuongvh\\Source\\Repos\\NPCETC-CNTT\\CBM-API\\obj\\",
         "projectStyle": "PackageReference",
