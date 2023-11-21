@@ -24,17 +24,28 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? name, int? pageNumber, int? pageSize,int? provinceId)
         {
+            if (name == null) { name = string.Empty; }
+            if (provinceId == null) { provinceId = 0; }
+            
             try
             {
-                var item = await (from rec in _context.Substations
-                                  where rec.DeletedAt == null
-                                  select rec)
-                                  .Include(b => b.Bays)                                  
-                                  .ToListAsync();
+                var item = await PaginatedList<Substation>.CreateAsync(
+                                    (from rec in _context.Substations
+                                     where rec.DeletedAt == null
+                                     && (name == string.Empty || rec.Name == name)
+                                     && (provinceId == 0 || rec.ProvinceId == provinceId)
+                                     select rec).Include(x => x.Province).Include(y=>y.Bays)
+                                     
+                                      , pageNumber ?? 1, pageSize ?? 10);
+                return Ok(new
+                {
+                    totalItem = item.TotalItems,
+                    totalPage = item.TotalPages,
+                    items = item
+                });
 
-                return Ok(item);
             }
             catch (Exception e)
             {
@@ -54,9 +65,10 @@ namespace CBM_API.Controllers
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
-                    itemExist.CreatedAt = DateTime.Now;
-                    itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.CreatedAt = DateTime.Now;
+                    item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.Substations.Add(item);
+                    _context.SaveChanges();
                     return Ok(item);
                 }
 

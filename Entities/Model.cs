@@ -11,10 +11,10 @@ namespace CBM_API.Entities
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }        
-        public int DeviceTypeId { get; set; }
-
-        public List<Manufacture> Manufactures { get; set; }
-        public List<Device> Devices { get; set; }
+        public int? DeviceTypeId { get; set; }
+        public DeviceType? DeviceType { get; set; }
+        public List<Manufacture>? Manufactures { get; set; }
+        public List<Device>? Devices { get; set; }
 
         public Model(int id, string name, int deviceTypeId)//,  DateTime? deletedAt)
         {
@@ -29,11 +29,11 @@ namespace CBM_API.Entities
         {
         }
         // JsonIgnore 
-        public DateTime? CreatedAt { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? DeletedAt { get; set; }
-        public string? DeletedBy { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        [JsonIgnore] public DateTime? CreatedAt { get; set; }
+        [JsonIgnore] public string? CreatedBy { get; set; }
+        [JsonIgnore] public DateTime? DeletedAt { get; set; }
+        [JsonIgnore] public string? DeletedBy { get; set; }
+        [JsonIgnore] public DateTime? UpdatedAt { get; set; }
+        [JsonIgnore] public string? UpdatedBy { get; set; }
     }
 }

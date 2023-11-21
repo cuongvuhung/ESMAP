@@ -27,18 +27,37 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? operName, int? bayId, int? substaionId,int? modelId, int? manufactureId, int? deviceTypeId, int? pageNumber, int? pageSize)
         {
             try
             {
-                var item = await (from rec in _context.Devices
-                                  where rec.DeletedAt == null
-                                  select rec)
-                                  .Include(x => x.DeviceType)
-                                  .Include(y => y.Manufacture)
-                                      .ToListAsync();
+                if (operName == null) { operName = string.Empty; }
+                if (bayId == null) { bayId = 0; }
+                if (substaionId == null) {  substaionId = 0; }
+                if (modelId == null) {  modelId = 0; }
+                if (manufactureId == null) {  manufactureId = 0; }
+                if (deviceTypeId == null) {  deviceTypeId = 0; }
 
-                return Ok(item);
+                var item = await PaginatedList<Device>.CreateAsync((from rec in _context.Devices
+                                                                    where rec.DeletedAt == null
+                                                                    && (operName==string.Empty || rec.OperName== operName)
+                                                                    && (bayId == 0 || rec.BayId == bayId)
+                                                                    && (modelId == 0 || rec.ModelId == modelId)
+                                                                    && (manufactureId == 0 || rec.ManufactureId == manufactureId)
+                                                                    && (deviceTypeId == 0 || rec.DeviceTypeId == deviceTypeId)
+                                                                    select rec)
+                                                                    .Include(x => x.DeviceType)
+                                                                    .Include(y => y.Manufacture)
+                                                                    .Include(z => z.Model),
+                                                                    pageNumber ?? 1, pageSize ?? 10);
+                                                                    
+
+                return Ok(new
+                {
+                    totalItems = item.TotalItems,
+                    totalPages = item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {
@@ -58,9 +77,10 @@ namespace CBM_API.Controllers
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
-                    itemExist.CreatedAt = DateTime.Now;
-                    itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.CreatedAt = DateTime.Now;
+                    item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.Devices.Add(item);
+                    _context.SaveChanges();
                     return Ok(item);
                 }
 
@@ -94,7 +114,7 @@ namespace CBM_API.Controllers
                     itemExist.VoltageLevel = item.VoltageLevel;
                     itemExist.OperName = item.OperName;
                     itemExist.DeviceTypeId = item.DeviceTypeId;
-                    itemExist.ManuFactureId = item.ManuFactureId;
+                    itemExist.ManufactureId = item.ManufactureId;
                     itemExist.ModelId = item.ModelId;
                     itemExist.YearManuFacture = item.YearManuFacture;
                     itemExist.Serial = item.Serial;

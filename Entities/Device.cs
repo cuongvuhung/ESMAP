@@ -16,11 +16,8 @@ namespace CBM_API.Entities
         public string VoltageLevel { get; set; }
         public string OperName { get; set; }
         public int DeviceTypeId { get; set; }
-        public DeviceType DeviceType { get; set; }
-        public int ManuFactureId { get; set; }
-        public Manufacture Manufacture { get; set; }
+        public int ManufactureId { get; set; }
         public int ModelId { get; set; }
-        public Model Model { get; set; }
         public int YearManuFacture { get; set; }
         public string Serial { get; set; } 
         public DateTime OperDate { get; set; }
@@ -32,10 +29,24 @@ namespace CBM_API.Entities
         public string PowerRate { get; set; }
         public string Ratio { get; set; }
         public string Wiring { get; set; }
-        public string Img { get; set; }
+        public string? Img { get; set; }
 
-        
-        
+        //////////////////////////////////////
+        public Bay? Bay { get; set; }
+        public Model? Model { get; set; }
+        public DeviceType? DeviceType { get; set; }
+        public Manufacture? Manufacture { get; set; }
+        //////////////////////////////////////
+        public List<BDA>? BDAs { get; set; }
+        public List<BDD>? BDDs { get; set; }
+        public List<CL>? CLs { get; set; }
+        public List<CSV>? CSVs { get; set; }
+        public List<DCL>? DCLs { get; set; }
+        public List<MBA>? MBAs { get; set; }
+        public List<MCAIR>? MCAIRs { get; set; }
+        public List<MCGIS>? MCGISs { get; set; }
+        public List<MCHGIS>? MCHGISs { get; set; }
+        public List<MCSF6>? MCSF6s { get; set; }
 
         public Device(int id, string name)//,  DateTime? deletedAt)
         {
@@ -49,11 +60,11 @@ namespace CBM_API.Entities
         {
         }
         // JsonIgnore 
-        public DateTime? CreatedAt { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? DeletedAt { get; set; }
-        public string? DeletedBy { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        [JsonIgnore] public DateTime? CreatedAt { get; set; }
+        [JsonIgnore] public string? CreatedBy { get; set; }
+        [JsonIgnore] public DateTime? DeletedAt { get; set; }
+        [JsonIgnore] public string? DeletedBy { get; set; }
+        [JsonIgnore] public DateTime? UpdatedAt { get; set; }
+        [JsonIgnore] public string? UpdatedBy { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> AddItem(Account item)
+        public async Task<IActionResult> AddItem([FromBody] Account item, [FromQuery] string? roleIdString)
         {
             if (item.DepartmentID == null) { item.DepartmentID = 20; }
             if (item.Password == null) { item.Password = Crypto.Hash("string"); }
@@ -62,8 +62,36 @@ namespace CBM_API.Controllers
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     await _context.Accounts.AddAsync(item);
                     await _context.SaveChangesAsync();
-                    await _context.AccountRoles.AddAsync(new AccountRole(item.Id, 2));
-                    await _context.SaveChangesAsync();
+                    
+                    if (roleIdString != null)
+                    {
+                        var roleIds = roleIdString.Split(' ');
+                        List<AccountRole>? accountRoles = await (from rec in _context.AccountRoles
+                                                                 where rec.AccountId == item.Id
+                                                                 select rec).ToListAsync();
+                        foreach (var accountRole in accountRoles)
+                        {
+                            _context.AccountRoles.Remove(accountRole);
+                            _context.SaveChanges();
+                        }
+                        foreach (var roleId in roleIds)
+                        {
+                            try
+                            {
+                                _context.AccountRoles.Add(new AccountRole(item.Id, Convert.ToInt32(roleId)));
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                return BadRequest(ex.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        await _context.AccountRoles.AddAsync(new AccountRole(item.Id, 2));
+                        await _context.SaveChangesAsync();
+                    }
                     return Ok(item);
                 }
                 
@@ -76,7 +104,7 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(Account item,string? oldpw)
+        public async Task<IActionResult> UpdateItem([FromBody]Account item,[FromQuery]string? oldpw, [FromQuery] string? roleIdString)
         {
             try
             {
@@ -102,8 +130,8 @@ namespace CBM_API.Controllers
                             itemExist.Avatar = item.Avatar;
                             itemExist.Email = item.Email;
                             itemExist.DepartmentID = item.DepartmentID;
+                            itemExist.Telephone = item.Telephone;
                             await _context.SaveChangesAsync();
-                            return Ok(itemExist);
                         }
                         else { return Unauthorized(); }
                     }
@@ -116,8 +144,32 @@ namespace CBM_API.Controllers
                         itemExist.Email = item.Email;
                         itemExist.DepartmentID = item.DepartmentID;
                         await _context.SaveChangesAsync();
-                        return Ok(itemExist);
                     }
+                    if (roleIdString != null)
+                    {
+                        var roleIds = roleIdString.Split(' ');
+                        List<AccountRole>? accountRoles = await (from rec in _context.AccountRoles
+                                                          where rec.AccountId == item.Id
+                                                          select rec).ToListAsync();
+                        foreach (var accountRole in accountRoles)
+                        {
+                            _context.AccountRoles.Remove(accountRole);
+                            _context.SaveChanges();
+                        }
+                        foreach (var roleId in roleIds) 
+                        {
+                            try
+                            {
+                                _context.AccountRoles.Add(new AccountRole(item.Id,Convert.ToInt32(roleId)));
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                return BadRequest(ex.Message);
+                            }
+                        }
+                    }
+                    return Ok(item);
                 }
             }
             catch (Exception e)
