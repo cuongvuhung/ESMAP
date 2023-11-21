@@ -24,16 +24,31 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? name, int? manuFactureId, int? deviceTypeId, int? pageNumber, int? pageSize)
         {
+            if (name == null) { name = string.Empty; }
+            if (manuFactureId == null) { manuFactureId = 0; }
+            if (deviceTypeId == null) { deviceTypeId = 0; }
+
             try
             {
-                var item = await (from rec in _context.Models
-                                  where rec.DeletedAt == null
-                                  select rec)                                      
-                                      .ToListAsync();
-
-                return Ok(item);
+                Manufacture? manufacture = await (from rec in _context.Manufactures
+                                                 where rec.Id == manuFactureId select rec).FirstOrDefaultAsync();
+                var item = await PaginatedList<Model>.CreateAsync((from rec in _context.Models
+                                                                   where rec.DeletedAt == null
+                                                                   && (name == string.Empty || rec.Name == name)
+                                                                   && (manuFactureId ==0 || rec.Manufactures.Contains(manufacture?? new Manufacture()))
+                                                                   && (deviceTypeId == 0 || rec.DeviceTypeId == deviceTypeId)
+                                                                   select rec)
+                                                                   .Include(x=>x.Manufactures)
+                                                                   .Include(y=>y.DeviceType),
+                                                                   pageNumber ?? 1, pageSize ?? 10);
+                return Ok(new 
+                { 
+                    totalItems = item.TotalItems,
+                    totalPages = item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {
@@ -43,19 +58,34 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> AddItem(Model item)
+        public async Task<IActionResult> AddItem([FromBody]Model item, [FromQuery]string manufactureIdString)
         {
             try
             {
                 Model? itemExist = await (from rec in _context.Models
                                           where rec.Name == item.Name
-                                       select rec).FirstOrDefaultAsync();
+                                          select rec).FirstOrDefaultAsync();
+                var manufactureIds = manufactureIdString.Split(' ');
+                
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
-                    itemExist.CreatedAt = DateTime.Now;
-                    itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.CreatedAt = DateTime.Now;
+                    item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.Models.Add(item);
+                    _context.SaveChanges();
+                    foreach (var manufactureId in manufactureIds) 
+                    {
+                        try
+                        {
+                            _context.ManufactureModel.Add(new ManufactureModel(0, item.Id, Convert.ToInt32(manufactureId)));
+                            _context.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest(ex.Message);
+                        }
+                    }
                     return Ok(item);
                 }
 
@@ -68,19 +98,46 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(Model item)
+        public async Task<IActionResult> UpdateItem([FromBody] Model item, [FromQuery] string? manufactureIdString)
         {
             try
             {
+                
                 Model? itemExist = await (from rec in _context.Models
                                           where rec.Id == item.Id
-                                       select rec).FirstOrDefaultAsync();
+                                          select rec).FirstOrDefaultAsync();
                 if (itemExist == null)
                 {
                     return BadRequest();
                 }
                 else
                 {
+                    if (manufactureIdString != null) 
+                    {
+                        var manufactureIds = manufactureIdString.Split(' ');
+                        List<ManufactureModel> manufactureModels = await (from rec in _context.ManufactureModel
+                                                                          where rec.ModelId == item.Id
+                                                                          select rec).ToListAsync();
+                        foreach (var manufactureModel in manufactureModels) 
+                        {
+                            _context.ManufactureModel.Remove(manufactureModel);
+                            _context.SaveChanges();
+                        }
+                        
+                        foreach (var manufactureId in manufactureIds)
+                        {
+                            try
+                            {
+                                _context.ManufactureModel.Add(new ManufactureModel(0, item.Id, Convert.ToInt32(manufactureId)));
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                return BadRequest(ex.Message);
+                            }
+                            
+                        }
+                    }
                     itemExist.UpdatedAt = DateTime.Now;
                     itemExist.UpdatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     itemExist.Name = item.Name;
@@ -92,7 +149,7 @@ namespace CBM_API.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
-            }
+            }            
         }
 
         //[Authorize(Roles = "admin")]
@@ -103,7 +160,7 @@ namespace CBM_API.Controllers
             {
                 Model? item = await (from rec in _context.Models
                                      where rec.Id == id
-                                      select rec).FirstOrDefaultAsync();
+                                     select rec).FirstOrDefaultAsync();
                 item.DeletedAt = DateTime.Now;
                 item.DeletedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                 _context.SaveChanges();

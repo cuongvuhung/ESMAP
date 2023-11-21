@@ -15,7 +15,6 @@ namespace CBM_API
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<AccountRole> AccountRoles { get; set; }
         public DbSet<Department> Departments { get; set; }
         //////////////////////////////////////////////////
         public DbSet<Province> Provinces { get; set; }
@@ -25,10 +24,22 @@ namespace CBM_API
         public DbSet<Manufacture> Manufactures { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
         public DbSet<Model> Models { get; set; }
+        //////////////////////////////////////////////////
+        public DbSet<AccountRole> AccountRoles { get; set; }
         public DbSet<ManufactureModel> ManufactureModel { get; set; }
         public DbSet<ManufactureDeviceType> ManufactureDeviceType { get; set; }
         //////////////////////////////////////////////////
         public DbSet<Device> Devices { get; set; }
+        public DbSet<BDA> BDAs { get; set; }
+        public DbSet<BDD> BDDs { get; set; }
+        public DbSet<CL> CLs { get; set; }
+        public DbSet<CSV> CSVs { get; set; }
+        public DbSet<DCL> DCLs { get; set; }
+        public DbSet<MBA> MBAs { get; set; }
+        public DbSet<MCAIR> MCAIRs { get; set; }
+        public DbSet<MCGIS> MCGISs { get; set; }
+        public DbSet<MCHGIS> MCHGISs { get; set; }
+        public DbSet<MCSF6> MCSF6s { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
@@ -72,6 +83,26 @@ namespace CBM_API
             modelBuilder.Entity<Model>()
                 .HasMany(d => d.Devices);
 
+            modelBuilder.Entity<Device>()
+                .HasMany(d => d.BDAs);
+            modelBuilder.Entity<Device>()
+                .HasMany(d => d.BDDs);
+            modelBuilder.Entity<Device>()
+                .HasMany(d => d.CLs);
+            modelBuilder.Entity<Device>()
+                .HasMany(d => d.CSVs);
+            modelBuilder.Entity<Device>()
+                .HasMany(d => d.DCLs);
+            modelBuilder.Entity<Device>()
+                .HasMany(d => d.MBAs);
+            modelBuilder.Entity<Device>()
+              .HasMany(d => d.MCAIRs);
+            modelBuilder.Entity<Device>()
+              .HasMany(d => d.MCGISs);
+            modelBuilder.Entity<Device>()
+              .HasMany(d => d.MCHGISs);
+            modelBuilder.Entity<Device>()
+              .HasMany(d => d.MCSF6s);
 
             /*    modelBuilder.Entity<Menu>()
                     .HasMany(e => e.Foods)

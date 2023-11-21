@@ -19,7 +19,7 @@ namespace CBM_API.Entities
         public Department? Department { get; set; }
         public List<Role>? Roles { get; } = new();
         
-        
+        public string? Telephone { get; set; }
         
         public Account(int id, string name, int departmentID, string password)//,  DateTime? deletedAt)
         {
@@ -35,11 +35,11 @@ namespace CBM_API.Entities
         {
         }
         // JsonIgnore 
-        public DateTime? CreatedAt { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? DeletedAt { get; set; }
-        public string? DeletedBy { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        [JsonIgnore] public DateTime? CreatedAt { get; set; }
+        [JsonIgnore] public string? CreatedBy { get; set; }
+        [JsonIgnore] public DateTime? DeletedAt { get; set; }
+        [JsonIgnore] public string? DeletedBy { get; set; }
+        [JsonIgnore] public DateTime? UpdatedAt { get; set; }
+        [JsonIgnore] public string? UpdatedBy { get; set; }
     }
 }

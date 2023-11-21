@@ -24,16 +24,23 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? name, int? pageNumber, int? pageSize)
         {
+            if (name == null) { name = string.Empty; }
             try
             {
-                var item = await (from rec in _context.Provinces
+                var item = await PaginatedList<Province>.CreateAsync(
+                                    (from rec in _context.Provinces
                                   where rec.DeletedAt == null
-                                  select rec)                                      
-                                      .ToListAsync();
-
-                return Ok(item);
+                                  && (name == string.Empty || rec.Name == name)
+                                  select rec).Include(x=>x.Substations)                                      
+                                      ,pageNumber ?? 1,pageSize ?? 10);
+                return Ok(new 
+                {
+                    totalItem = item.TotalItems,
+                    totalPage = item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {
@@ -53,9 +60,10 @@ namespace CBM_API.Controllers
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
-                    itemExist.CreatedAt = DateTime.Now;
-                    itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
-                    _context.Provinces.Add(item);
+                    item.CreatedAt = DateTime.Now;
+                    item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    await _context.Provinces.AddAsync(item);
+                    await _context.SaveChangesAsync();
                     return Ok(item);
                 }
 

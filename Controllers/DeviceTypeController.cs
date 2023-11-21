@@ -24,16 +24,24 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? name, int? pageNumber, int? pageSize)
         {
+            if (name == null) { name = string.Empty; }
             try
             {
-                var item = await (from rec in _context.DeviceTypes
-                                  where rec.DeletedAt == null
-                                  select rec)                                      
-                                      .ToListAsync();
-
-                return Ok(item);
+                var item = await PaginatedList<DeviceType>.CreateAsync((from rec in _context.DeviceTypes
+                                                                        where rec.DeletedAt == null
+                                                                        && (name == string.Empty || rec.Name == name)
+                                                                        select rec)
+                                                                        .Include(x => x.Manufactures)
+                                                                        .Include(y => y.Models),
+                                                                        pageNumber ?? 1, pageSize ?? 10);
+                return Ok(new
+                {
+                    totalItems = item.TotalItems,
+                    totalPages = item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {
@@ -42,20 +50,34 @@ namespace CBM_API.Controllers
         }
 
         //[Authorize(Roles = "admin")]
-        [HttpPost]
-        public async Task<IActionResult> AddItem(DeviceType item)
+        /*[HttpPost]
+        public async Task<IActionResult> AddItem(string manufactureIdString,DeviceType item)
         {
             try
             {
                 DeviceType? itemExist = await (from rec in _context.DeviceTypes
                                                where rec.Name == item.Name
-                                       select rec).FirstOrDefaultAsync();
+                                               select rec).FirstOrDefaultAsync();
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
-                    itemExist.CreatedAt = DateTime.Now;
-                    itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    var manufactureIDs = manufactureIdString.Split(' ');
+                    item.CreatedAt = DateTime.Now;
+                    item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.DeviceTypes.Add(item);
+                    _context.SaveChanges();
+                    foreach(var manufactureId in manufactureIDs) 
+                    {
+                        try
+                        {
+                            _context.ManufactureDeviceType.Add(new ManufactureDeviceType(0, item.Id, Convert.ToInt32(manufactureId)));
+                            _context.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest(ex.Message);
+                        }
+                    }                   
                     return Ok(item);
                 }
 
@@ -74,7 +96,7 @@ namespace CBM_API.Controllers
             {
                 DeviceType? itemExist = await (from rec in _context.DeviceTypes
                                                where rec.Id == item.Id
-                                       select rec).FirstOrDefaultAsync();
+                                               select rec).FirstOrDefaultAsync();
                 if (itemExist == null)
                 {
                     return BadRequest();
@@ -102,7 +124,7 @@ namespace CBM_API.Controllers
             {
                 DeviceType? item = await (from rec in _context.DeviceTypes
                                           where rec.Id == id
-                                      select rec).FirstOrDefaultAsync();
+                                          select rec).FirstOrDefaultAsync();
                 item.DeletedAt = DateTime.Now;
                 item.DeletedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                 _context.SaveChanges();
@@ -112,7 +134,7 @@ namespace CBM_API.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
+        }*/
     }
 }
 

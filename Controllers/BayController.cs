@@ -24,16 +24,26 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? name, int? substationId,int? pageNumber, int? pageSize)
         {
+            if (name == null) { name = string.Empty; }
+            if (substationId == null) { substationId = 0; }
             try
             {
-                var item = await (from rec in _context.Bays
-                                  where rec.DeletedAt == null
-                                  select rec)
-                                  .ToListAsync();
-
-                return Ok(item);
+                var item = await PaginatedList<Bay>.CreateAsync((from rec in _context.Bays
+                                                                 where rec.DeletedAt == null
+                                                                 && (name == string.Empty || rec.Name == name)
+                                                                 && (substationId == 0 || rec.SubstationId == substationId)
+                                                                 select rec)
+                                                                 .Include(x=>x.Substation).ThenInclude(y=>y.Province)
+                                                                 .Include(z=>z.Devices), 
+                                                                 pageNumber ?? 1, pageSize ?? 10);
+                return Ok(new
+                { 
+                    totalItems= item.TotalItems,
+                    totalPages= item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {
@@ -53,9 +63,10 @@ namespace CBM_API.Controllers
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
-                    itemExist.CreatedAt = DateTime.Now;
-                    itemExist.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.CreatedAt = DateTime.Now;
+                    item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.Bays.Add(item);
+                    _context.SaveChanges();
                     return Ok(item);
                 }
 

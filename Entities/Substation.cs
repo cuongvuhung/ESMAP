@@ -11,8 +11,9 @@ namespace CBM_API.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int ProvinceId { get; set; }
+        public Province? Province { get; set; }
         public string Code { get; set; }
-        public List<Bay> Bays { get; set; }
+        public List<Bay>? Bays { get; set; }
 
         public Substation(int id, string name)//,  DateTime? deletedAt)
         {
@@ -26,11 +27,11 @@ namespace CBM_API.Entities
         {
         }
         // JsonIgnore 
-        public DateTime? CreatedAt { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? DeletedAt { get; set; }
-        public string? DeletedBy { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        [JsonIgnore] public DateTime? CreatedAt { get; set; }
+        [JsonIgnore] public string? CreatedBy { get; set; }
+        [JsonIgnore] public DateTime? DeletedAt { get; set; }
+        [JsonIgnore] public string? DeletedBy { get; set; }
+        [JsonIgnore] public DateTime? UpdatedAt { get; set; }
+        [JsonIgnore] public string? UpdatedBy { get; set; }
     }
 }
