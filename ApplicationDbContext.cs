@@ -45,6 +45,11 @@ namespace CBM_API
         public DbSet<MCGIS> MCGISs { get; set; }
         public DbSet<MCHGIS> MCHGISs { get; set; }
         public DbSet<MCSF6> MCSF6s { get; set; }
+        public DbSet<MBAr> MBArs { get; set; }
+        public DbSet<MCAIRr> MCAIRrs { get; set; }
+        public DbSet<MCGISr> MCGISrs { get; set; }
+        public DbSet<MCHGISr> MCHGISrs { get; set; }
+        public DbSet<MCSF6r> MCSF6rs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()

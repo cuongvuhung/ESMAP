@@ -11,42 +11,42 @@ namespace CBM_API.Entities
         public int Id { get; set; }
         public int DeviceId { get; set; }
         public DateTime DateTest { get; set; }
-        public float? Outside { get; set; }
-        public float? Temperature { get; set; }
-        public float? Pd { get; set; }
-        public float? PdOnline { get; set; }
-        public float? Oil { get; set; }
-        public float? Oilair { get; set; }
-        public float? OilOLTC { get; set; }
-        public float? AirOLTC { get; set; }
-        public float? OldPaperIsolate { get; set; }
-        public float? MotorOLTC { get; set; }
-        public float? NM { get; set; }
-        public float? HistoryOper { get; set; }
-        public float? OldOper { get; set; }
-        public float? RIsolate { get; set; }
-        public float? MagnetIsolate { get; set; }
-        public float? CoilIsolate { get; set; }
-        public float? Ratio { get; set; }
-        public float? TgLost { get; set; }
-        public float? TgLostCapa { get; set; }
-        public float? LowVoltage { get; set; }
-        public float? OLTC { get; set; }
-        public float? Frequency { get; set; }
-        public float? RLostCurrent { get; set; }
-        public float? HardCD { get; set; }
-        public float? VoltageHightRate { get; set; }
-        public float? CurrentVoltage { get; set; }
-        public float? SensorPD { get; set; }
-        public float? ScoreLevel1 { get; set; }
-        public float? ScoreLevel23 { get; set; }
-        public float? TotalScore { get; set; }
+        public double? Outside { get; set; }
+        public double? Temperature { get; set; }
+        public double? Pd { get; set; }
+        public double? PdOnline { get; set; }
+        public double? Oil { get; set; }
+        public double? Oilair { get; set; }
+        public double? OilOLTC { get; set; }
+        public double? AirOLTC { get; set; }
+        public double? OldPaperIsolate { get; set; }
+        public double? MotorOLTC { get; set; }
+        public double? NM { get; set; }
+        public double? HistoryOper { get; set; }
+        public double? OldOper { get; set; }
+        public double? RIsolate { get; set; }
+        public double? MagnetIsolate { get; set; }
+        public double? CoilIsolate { get; set; }
+        public double? Ratio { get; set; }
+        public double? TgLost { get; set; }
+        public double? TgLostCapa { get; set; }
+        public double? LowVoltage { get; set; }
+        public double? OLTC { get; set; }
+        public double? Frequency { get; set; }
+        public double? RLostCurrent { get; set; }
+        public double? HardCD { get; set; }
+        public double? VoltageHightRate { get; set; }
+        public double? CurrentVoltage { get; set; }
+        public double? SensorPD { get; set; }
+        public double? ScoreLevel1 { get; set; }
+        public double? ScoreLevel23 { get; set; }
+        public double? TotalScore { get; set; }
         public string? Note { get; set; }
         public string? ReviewETC { get; set; }
         public string? Img { get; set; }
         public Device? Device { get; set; }
 
-        public MBA(int id, int deviceId, DateTime dateTest, float? outside, float? temperature, float? pd, float? pdOnline, float? oil, float? oilair, float? oilOLTC, float? airOLTC, float? oldPaperIsolate, float? motorOLTC, float? nM, float? historyOper, float? oldOper, float? rIsolate, float? magnetIsolate, float? coilIsolate, float? ratio, float? tgLost, float? tgLostCapa, float? lowVoltage, float? oLTC, float? frequency, float? rLostCurrent, float? hardCD, float? voltageHightRate, float? currentVoltage, float? sensorPD, float? scoreLevel1, float? scoreLevel23, float? totalScore, string? note, string? reviewETC, string? img, Device? device)
+        public MBA(int id, int deviceId, DateTime dateTest, double? outside, double? temperature, double? pd, double? pdOnline, double? oil, double? oilair, double? oilOLTC, double? airOLTC, double? oldPaperIsolate, double? motorOLTC, double? nM, double? historyOper, double? oldOper, double? rIsolate, double? magnetIsolate, double? coilIsolate, double? ratio, double? tgLost, double? tgLostCapa, double? lowVoltage, double? oLTC, double? frequency, double? rLostCurrent, double? hardCD, double? voltageHightRate, double? currentVoltage, double? sensorPD, double? scoreLevel1, double? scoreLevel23, double? totalScore, string? note, string? reviewETC, string? img, Device? device)
         {
             Id = id;
             DeviceId = deviceId;

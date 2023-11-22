@@ -11,33 +11,33 @@ namespace CBM_API.Entities
         public int Id { get; set; }
         public int DeviceId { get; set; }
         public DateTime DateTest { get; set; }
-        public float? Outside { get; set; }
-        public float? Temperature { get; set; }
-        public float? Pd { get; set; }
-        public float? PdTve { get; set; }
-        public float? PdOnline { get; set; }
-        public float? HistoryMain { get; set; }
-        public float? NumberYearOper { get; set; }
-        public float? RIsolate { get; set; }
-        public float? RContact { get; set; }
-        public float? TimeCut { get; set; }
-        public float? RIsolateClose { get; set; }
-        public float? RIsolateCut { get; set; }
-        public float? RIsolateMotor { get; set; }
-        public float? Air { get; set; }
-        public float? HightVoltageAC { get; set; }
-        public float? PdOnlineAnalysis { get; set; }
-        public float? CutOnline { get; set; }
-        public float? SpeedFlowCut { get; set; }
-        public float? ScoreLevel1 { get; set; }
-        public float? ScoreLevel23 { get; set; }
-        public float? TotalScore { get; set; }
+        public double? Outside { get; set; }
+        public double? Temperature { get; set; }
+        public double? Pd { get; set; }
+        public double? PdTve { get; set; }
+        public double? PdOnline { get; set; }
+        public double? HistoryMain { get; set; }
+        public double? NumberYearOper { get; set; }
+        public double? RIsolate { get; set; }
+        public double? RContact { get; set; }
+        public double? TimeCut { get; set; }
+        public double? RIsolateClose { get; set; }
+        public double? RIsolateCut { get; set; }
+        public double? RIsolateMotor { get; set; }
+        public double? Air { get; set; }
+        public double? HightVoltageAC { get; set; }
+        public double? PdOnlineAnalysis { get; set; }
+        public double? CutOnline { get; set; }
+        public double? SpeedFlowCut { get; set; }
+        public double? ScoreLevel1 { get; set; }
+        public double? ScoreLevel23 { get; set; }
+        public double? TotalScore { get; set; }
         public string? Note { get; set; }
         public string? ReviewETC { get; set; }
         public string? Img { get; set; }
         public Device? Device { get; set; }
 
-        public MCAIR(int id, int deviceId, DateTime dateTest, float? outside, float? temperature, float? pd, float? pdTve, float? historyMain, float? numberYearOper, float? rIsolate, float? rContact, float? timeCut, float? rIsolateClose, float? rIsolateCut, float? rIsolateMotor, float? air, float? hightVoltageAC, float? pdOnlineAnalysis, float? cutOnline, float? speedFlowCut, float? scoreLevel1, float? scoreLevel23, float? totalScore, string? note, string? reviewETC, string? img)
+        public MCAIR(int id, int deviceId, DateTime dateTest, double? outside, double? temperature, double? pd, double? pdTve, double? historyMain, double? numberYearOper, double? rIsolate, double? rContact, double? timeCut, double? rIsolateClose, double? rIsolateCut, double? rIsolateMotor, double? air, double? hightVoltageAC, double? pdOnlineAnalysis, double? cutOnline, double? speedFlowCut, double? scoreLevel1, double? scoreLevel23, double? totalScore, string? note, string? reviewETC, string? img)
         {
             Id = id;
             DeviceId = deviceId;
