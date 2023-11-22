@@ -12,23 +12,23 @@ namespace CBM_API.Entities
         public int DeviceId { get; set; }
         
         public DateTime DateTest { get; set; }
-        public float? Outside { get; set; }
-        public float? Temperature { get; set; }
-        public float? Pd { get; set; }
-        public float? HistoryMain { get; set; }
-        public float? RIsolate { get; set; }
-        public float? RContact { get; set; }
-        public float? ROneWayMotor { get; set; }
-        public float? VoltageACMotor { get; set; }
-        public float? ScoreLevel1 { get; set; }
-        public float? ScoreLevel23 { get; set; }
-        public float? TotalScore { get; set; }
+        public double? Outside { get; set; }
+        public double? Temperature { get; set; }
+        public double? Pd { get; set; }
+        public double? HistoryMain { get; set; }
+        public double? RIsolate { get; set; }
+        public double? RContact { get; set; }
+        public double? ROneWayMotor { get; set; }
+        public double? VoltageACMotor { get; set; }
+        public double? ScoreLevel1 { get; set; }
+        public double? ScoreLevel23 { get; set; }
+        public double? TotalScore { get; set; }
         public string? Note { get; set; }
         public string? ReviewETC { get; set; }
         public string? Img { get; set; }
         public Device? Device { get; set; }
 
-        public DCL(int id, int deviceId, DateTime dateTest, float? outside, float? temperature, float? pd, float? historyMain, float? rIsolate, float? rContact, float? rOneWayMotor, float? voltageACMotor, float? scoreLevel1, float? scoreLevel23, float? totalScore, string? note, string? reviewETC, string? img, Device? device)
+        public DCL(int id, int deviceId, DateTime dateTest, double? outside, double? temperature, double? pd, double? historyMain, double? rIsolate, double? rContact, double? rOneWayMotor, double? voltageACMotor, double? scoreLevel1, double? scoreLevel23, double? totalScore, string? note, string? reviewETC, string? img, Device? device)
         {
             Id = id;
             DeviceId = deviceId;
