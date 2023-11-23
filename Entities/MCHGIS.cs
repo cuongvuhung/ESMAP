@@ -11,36 +11,36 @@ namespace CBM_API.Entities
         public int Id { get; set; }
         public int DeviceId { get; set; }
         public DateTime DateTest { get; set; }
-        public float? Outside { get; set; }
-        public float? Temperature { get; set; }
-        public float? Pd { get; set; }
-        public float? SF6Lost { get; set; }
-        public float? HistoryMain { get; set; }
-        public float? NumberYearOper { get; set; }
-        public float? RIsolate { get; set; }
-        public float? RContact { get; set; }
-        public float? TimeCut { get; set; }
-        public float? RIsolateClose { get; set; }
-        public float? RIsolateCut { get; set; }
-        public float? PurifyHuminitySF6 { get; set; }
-        public float? SF6Decay { get; set; }
-        public float? LostSF6 { get; set; }
-        public float? RIsolateMotor { get; set; }
-        public float? HightVoltageAC { get; set; }
-        public float? CutOnline { get; set; }
-        public float? RMotor { get; set; }
-        public float? SpeedFlowCut { get; set; }
-        public float? SF6Analysis { get; set; }
-        public float? PdAnalysis { get; set; }
-        public float? ScoreLevel1 { get; set; }
-        public float? ScoreLevel23 { get; set; }
-        public float? TotalScore { get; set; }
+        public double? Outside { get; set; }
+        public double? Temperature { get; set; }
+        public double? Pd { get; set; }
+        public double? SF6Lost { get; set; }
+        public double? HistoryMain { get; set; }
+        public double? NumberYearOper { get; set; }
+        public double? RIsolate { get; set; }
+        public double? RContact { get; set; }
+        public double? TimeCut { get; set; }
+        public double? RIsolateClose { get; set; }
+        public double? RIsolateCut { get; set; }
+        public double? PurifyHuminitySF6 { get; set; }
+        public double? SF6Decay { get; set; }
+        public double? LostSF6 { get; set; }
+        public double? RIsolateMotor { get; set; }
+        public double? HightVoltageAC { get; set; }
+        public double? CutOnline { get; set; }
+        public double? RMotor { get; set; }
+        public double? SpeedFlowCut { get; set; }
+        public double? SF6Analysis { get; set; }
+        public double? PdAnalysis { get; set; }
+        public double? ScoreLevel1 { get; set; }
+        public double? ScoreLevel23 { get; set; }
+        public double? TotalScore { get; set; }
         public string? Note { get; set; }
         public string? ReviewETC { get; set; }
         public string? Img { get; set; }
         public Device? Device { get; set; }
 
-        public MCHGIS(int id, int deviceId, DateTime dateTest, float? outside, float? temperature, float? pd, float? sF6Lost, float? historyMain, float? numberYearOper, float? rIsolate, float? rContact, float? timeCut, float? rIsolateClose, float? rIsolateCut, float? purifyHuminitySF6, float? sF6Decay, float? lostSF6, float? rIsolateMotor, float? hightVoltageAC, float? cutOnline, float? rMotor, float? speedFlowCut, float? sF6Analysis, float? pdAnalysis, float? scoreLevel1, float? scoreLevel23, float? totalScore, string? note, string? reviewETC, string? img)
+        public MCHGIS(int id, int deviceId, DateTime dateTest, double? outside, double? temperature, double? pd, double? sF6Lost, double? historyMain, double? numberYearOper, double? rIsolate, double? rContact, double? timeCut, double? rIsolateClose, double? rIsolateCut, double? purifyHuminitySF6, double? sF6Decay, double? lostSF6, double? rIsolateMotor, double? hightVoltageAC, double? cutOnline, double? rMotor, double? speedFlowCut, double? sF6Analysis, double? pdAnalysis, double? scoreLevel1, double? scoreLevel23, double? totalScore, string? note, string? reviewETC, string? img)
         {
             Id = id;
             DeviceId = deviceId;

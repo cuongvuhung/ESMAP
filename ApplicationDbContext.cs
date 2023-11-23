@@ -31,15 +31,25 @@ namespace CBM_API
         //////////////////////////////////////////////////
         public DbSet<Device> Devices { get; set; }
         public DbSet<BDA> BDAs { get; set; }
+        public DbSet<BDAr> BDArs { get; set; }
         public DbSet<BDD> BDDs { get; set; }
+        public DbSet<BDDr> BDDrs { get; set; }
         public DbSet<CL> CLs { get; set; }
+        public DbSet<CLr> CLrs { get; set; }
         public DbSet<CSV> CSVs { get; set; }
+        public DbSet<CSVr> CSVrs { get; set; }
         public DbSet<DCL> DCLs { get; set; }
+        public DbSet<DCLr> DCLrs { get; set; }
         public DbSet<MBA> MBAs { get; set; }
         public DbSet<MCAIR> MCAIRs { get; set; }
         public DbSet<MCGIS> MCGISs { get; set; }
         public DbSet<MCHGIS> MCHGISs { get; set; }
         public DbSet<MCSF6> MCSF6s { get; set; }
+        public DbSet<MBAr> MBArs { get; set; }
+        public DbSet<MCAIRr> MCAIRrs { get; set; }
+        public DbSet<MCGISr> MCGISrs { get; set; }
+        public DbSet<MCHGISr> MCHGISrs { get; set; }
+        public DbSet<MCSF6r> MCSF6rs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
@@ -123,4 +133,5 @@ namespace CBM_API
         }        
     }
 }
+
 

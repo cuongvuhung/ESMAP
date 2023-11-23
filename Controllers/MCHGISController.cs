@@ -61,6 +61,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCHGISr? mCHGISr = await (from rec in _context.MCHGISrs select rec).FirstOrDefaultAsync();
                 MCHGIS? itemExist = await (from rec in _context.MCHGISs
                                            where 
                                         rec.DateTest == item.DateTest
@@ -71,6 +72,11 @@ namespace CBM_API.Controllers
                 {
                     item.CreatedAt = DateTime.Now;
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.ScoreLevel1 = Calc.MCHGISScore1(item,mCHGISr);
+                    item.ScoreLevel23 = Calc.MCHGISScore23(item);
+                    item.TotalScore = Calc.MCHGISScore1(item, mCHGISr) + Calc.MCHGISScore23(item);
+
+
                     _context.MCHGISs.Add(item);
                     _context.SaveChanges();
                     return Ok(item);
@@ -89,6 +95,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCHGISr? mCHGISr = await (from rec in _context.MCHGISrs select rec).FirstOrDefaultAsync();
                 MCHGIS? itemExist = await (from rec in _context.MCHGISs
                                            where rec.Id == item.Id
                                             select rec).FirstOrDefaultAsync();
@@ -124,14 +131,14 @@ namespace CBM_API.Controllers
                     itemExist.SpeedFlowCut = item.SpeedFlowCut;
                     itemExist.SF6Analysis = item.SF6Analysis;
                     itemExist.PdAnalysis = item.PdAnalysis;
-                    itemExist.ScoreLevel1 = item.ScoreLevel1;
-                    itemExist.ScoreLevel23 = item.ScoreLevel23;
-                    itemExist.TotalScore = item.TotalScore;
+                    itemExist.ScoreLevel1 = Calc.MCHGISScore1(item, mCHGISr);
+                    itemExist.ScoreLevel23 = Calc.MCHGISScore23(item);
+                    itemExist.TotalScore = Calc.MCHGISScore1(item, mCHGISr) + Calc.MCHGISScore23(item);
                     itemExist.Note = item.Note;
                     itemExist.ReviewETC = item.ReviewETC;
                     itemExist.Img = item.Img;
                     _context.SaveChanges();
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)

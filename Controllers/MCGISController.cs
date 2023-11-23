@@ -61,6 +61,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCGISr? mCGISr = await (from rec in _context.MCGISrs select rec).FirstOrDefaultAsync();
                 MCGIS? itemExist = await (from rec in _context.MCGISs
                                           where 
                                         rec.DateTest == item.DateTest
@@ -71,6 +72,9 @@ namespace CBM_API.Controllers
                 {
                     item.CreatedAt = DateTime.Now;
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.ScoreLevel1 = Calc.MCGISScore1(item, mCGISr);
+                    item.ScoreLevel23 = Calc.MCGISScore23(item);
+                    item.TotalScore = Calc.MCGISScore1(item, mCGISr) + Calc.MCGISScore23(item); 
                     _context.MCGISs.Add(item);
                     _context.SaveChanges();
                     return Ok(item);
@@ -89,6 +93,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCGISr? mCGISr = await (from rec in _context.MCGISrs select rec).FirstOrDefaultAsync();
                 MCGIS? itemExist = await (from rec in _context.MCGISs
                                           where rec.Id == item.Id
                                             select rec).FirstOrDefaultAsync();
@@ -126,14 +131,14 @@ namespace CBM_API.Controllers
                     itemExist.SpeedFlowCut = item.SpeedFlowCut;
                     itemExist.SF6Analysis = item.SF6Analysis;
                     itemExist.PdAnalysis = item.PdAnalysis;
-                    itemExist.ScoreLevel1 = item.ScoreLevel1;
-                    itemExist.ScoreLevel23 = item.ScoreLevel23;
-                    itemExist.TotalScore = item.TotalScore;
+                    itemExist.ScoreLevel1 = Calc.MCGISScore1(item, mCGISr);
+                    itemExist.ScoreLevel23 = Calc.MCGISScore23(item);
+                    itemExist.TotalScore = Calc.MCGISScore1(item, mCGISr) + Calc.MCGISScore23(item);
                     itemExist.Note = item.Note;
                     itemExist.ReviewETC = item.ReviewETC;
                     itemExist.Img = item.Img;
                     _context.SaveChanges();
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)

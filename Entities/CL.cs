@@ -12,26 +12,26 @@ namespace CBM_API.Entities
         public int DeviceId { get; set; }
         
         public DateTime DateTest { get; set; }
-        public float? Outside { get; set; }
-        public float? Temperature { get; set; }
-        public float? Pd { get; set; }
-        public float? HfctAndTev { get; set; }
-        public float? HistoryMain { get; set; }
-        public float? NumberYearOper { get; set; }
-        public float? RIsolate { get; set; }
-        public float? HightVoltageRes { get; set; }
-        public float? HightVoltageResCase { get; set; }
-        public float? PdDeep { get; set; }
-        public float? TgLost { get; set; }
-        public float? ScoreLevel1 { get; set; }
-        public float? ScoreLevel23 { get; set; }
-        public float? TotalScore { get; set; }
+        public double? Outside { get; set; }
+        public double? Temperature { get; set; }
+        public double? Pd { get; set; }
+        public double? HfctAndTev { get; set; }
+        public double? HistoryMain { get; set; }
+        public double? NumberYearOper { get; set; }
+        public double? RIsolate { get; set; }
+        public double? HightVoltageRes { get; set; }
+        public double? HightVoltageResCase { get; set; }
+        public double? PdDeep { get; set; }
+        public double? TgLost { get; set; }
+        public double? ScoreLevel1 { get; set; }
+        public double? ScoreLevel23 { get; set; }
+        public double? TotalScore { get; set; }
         public string? Note { get; set; }
         public string? ReviewETC { get; set; }
         public string? Img { get; set; }
         public Device? Device { get; set; }
 
-        public CL(int id, int deviceId, DateTime dateTest, float? outside, float? temperature, float? pd, float? hfctAndTev, float? historyMain, float? numberYearOper, float? rIsolate, float? hightVoltageRes, float? hightVoltageResCase, float? pdDeep, float? tgLost, float? scoreLevel1, float? scoreLevel23, float? totalScore, string? note, string? reviewETC, string? img, Device? device)
+        public CL(int id, int deviceId, DateTime dateTest, double? outside, double? temperature, double? pd, double? hfctAndTev, double? historyMain, double? numberYearOper, double? rIsolate, double? hightVoltageRes, double? hightVoltageResCase, double? pdDeep, double? tgLost, double? scoreLevel1, double? scoreLevel23, double? totalScore, string? note, string? reviewETC, string? img, Device? device)
         {
             Id = id;
             DeviceId = deviceId;

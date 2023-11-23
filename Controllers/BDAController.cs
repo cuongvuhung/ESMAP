@@ -31,7 +31,7 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem(int? deviceID,int? pageNumber, int? pageSize)
+        public async Task<IActionResult> SearchItem(int? deviceID, int? pageNumber, int? pageSize)
         {
             try
             {
@@ -61,16 +61,20 @@ namespace CBM_API.Controllers
         {
             try
             {
+                BDAr? bDAr = await (from rec in _context.BDArs select rec).FirstOrDefaultAsync();
                 BDA? itemExist = await (from rec in _context.BDAs
-                                        where 
+                                        where
                                         rec.DateTest == item.DateTest
                                         && rec.Id == item.Id
-                                            select rec).FirstOrDefaultAsync();
+                                        select rec).FirstOrDefaultAsync();
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
                     item.CreatedAt = DateTime.Now;
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.ScoreLevel1 = Calc.BDAScore1(item,bDAr);
+                    item.ScoreLevel23 = Calc.BDAScore23(item);
+                    item.TotalScore = Calc.BDAScore1(item, bDAr) + Calc.BDAScore23(item); 
                     _context.BDAs.Add(item);
                     _context.SaveChanges();
                     return Ok(item);
@@ -89,9 +93,10 @@ namespace CBM_API.Controllers
         {
             try
             {
+                BDAr? bDAr = await (from rec in _context.BDArs select rec).FirstOrDefaultAsync();
                 BDA? itemExist = await (from rec in _context.BDAs
                                         where rec.Id == item.Id
-                                            select rec).FirstOrDefaultAsync();
+                                        select rec).FirstOrDefaultAsync();
                 if (itemExist == null)
                 {
                     return BadRequest();
@@ -116,14 +121,14 @@ namespace CBM_API.Controllers
                     itemExist.RatioVoltageHight = item.RatioVoltageHight;
                     itemExist.OilIsolate = item.OilIsolate;
                     itemExist.SensorWireLoop = item.SensorWireLoop;
-                    itemExist.ScoreLevel1 = item.ScoreLevel1;
-                    itemExist.ScoreLevel23 = item.ScoreLevel23;
-                    itemExist.TotalScore = item.TotalScore;
+                    itemExist.ScoreLevel1 = Calc.BDAScore1(item,bDAr); 
+                    itemExist.ScoreLevel23 = Calc.BDAScore23(item);
+                    itemExist.TotalScore = Calc.BDAScore1(item, bDAr) + Calc.BDAScore23(item);
                     itemExist.Note = item.Note;
                     itemExist.ReviewETC = item.ReviewETC;
                     itemExist.Img = item.Img;
                     _context.SaveChanges();
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)
@@ -139,8 +144,8 @@ namespace CBM_API.Controllers
             try
             {
                 BDA? item = await (from rec in _context.BDAs
-                                       where rec.Id == id
-                                       select rec).FirstOrDefaultAsync();
+                                   where rec.Id == id
+                                   select rec).FirstOrDefaultAsync();
                 item.DeletedAt = DateTime.Now;
                 item.DeletedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                 _context.SaveChanges();
@@ -151,5 +156,6 @@ namespace CBM_API.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
     }
 }
