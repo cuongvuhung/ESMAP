@@ -70,8 +70,8 @@ public class Program
                                         "http://localhost:14886",
                                         "http://localhost:14886",
                                         "https://localhost:5173",
-                                        "https://qlba.npcetc.vn",
-                                        "http://qlba.npcetc.vn",
+                                        "https://cbm.npcetc.vn",
+                                        "http://cbm.npcetc.vn",
                                         "*")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
@@ -80,7 +80,7 @@ public class Program
         });
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "CBM API", Version = "v1" });
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
