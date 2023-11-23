@@ -70,8 +70,8 @@ public class Program
                                         "http://localhost:14886",
                                         "http://localhost:14886",
                                         "https://localhost:5173",
-                                        "https://qlba.npcetc.vn",
-                                        "http://qlba.npcetc.vn",
+                                        "https://cbm.npcetc.vn",
+                                        "http://cbm.npcetc.vn",
                                         "*")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
