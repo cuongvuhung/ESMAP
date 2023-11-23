@@ -341,5 +341,256 @@ namespace CBM_API.Ultilities
                 + item.SensorPD                
                 ), 2);
         }
+        public static double? MCAIRScore1(MCAIR item, MCAIRr mCAIRr)
+        {
+            if (mCAIRr == null) { return 0; }
+            double rOutside = mCAIRr.Outside ?? 0;
+            double rTemp = mCAIRr.Temperature ?? 0;
+            double rPd = mCAIRr.Pd ?? 0;
+            double rPdTve = mCAIRr.PdTve ?? 0;
+            double rPdOnline = mCAIRr.PdOnline ?? 0;
+            double rHis = mCAIRr.HistoryMain ?? 0;
+            double rNumberYearOper = mCAIRr.NumberYearOper ?? 0;
+            double maxScore = 9.9;
+
+            Console.WriteLine("maxScore= " + maxScore);
+            double? Outside = item.Outside;
+            double? Temperature = item.Temperature;
+            double? Pd = item.Pd;
+            double? PdTve = item.PdTve;
+            double? PdOnline = item.PdOnline;
+            double? HistoryMain = item.HistoryMain;
+            double? NumberYearOper = item.NumberYearOper ?? 0;
+
+            if (item.Outside == null) { rOutside = 0; Outside = 0; }
+            if (item.Temperature == null) { rTemp = 0; Temperature = 0; }
+            if (item.Pd == null) { rPd = 0; Pd = 0; }
+            if (item.PdTve == null) { rPdTve = 0; PdTve = 0; }
+            if (item.PdOnline == null) { rPdOnline = 0; PdOnline = 0; }
+            if (item.HistoryMain == null) { rHis = 0; HistoryMain = 0; }
+            if (item.NumberYearOper == null) { rNumberYearOper = 0; NumberYearOper = 0; }
+
+            double sumRate = rOutside + rTemp + rPd + rHis + rPdTve+ rPdOnline+ rNumberYearOper;
+            Console.WriteLine("sumRate= " + sumRate);
+            double scorePPxR = maxScore / (3 * sumRate);
+            Console.WriteLine("scorePPxR= " + scorePPxR);
+            double Results = Math.Round(Convert.ToSingle(
+                (Outside * rOutside
+                + Temperature * rTemp
+                + Pd * rPd
+                + PdTve * rPdTve
+                + PdOnline * rPdOnline
+                + HistoryMain * rHis
+                + NumberYearOper * rNumberYearOper)
+                * scorePPxR), 2);
+            Console.WriteLine("Results= " + Results);
+            return Results;
+        }
+        public static double? MCAIRScore23(MCAIR item)
+        {
+            return Math.Round(Convert.ToSingle(
+                item.RIsolate
+                + item.RContact
+                + item.TimeCut
+                + item.RIsolateClose
+                + item.RIsolateCut
+                + item.RIsolateMotor
+                + item.Air
+                + item.HightVoltageAC
+                + item.PdOnlineAnalysis
+                + item.CutOnline
+                + item.SpeedFlowCut
+                ), 2);
+        }
+        public static double? MCGISScore1(MCGIS item, MCGISr mCGISr)
+        {
+            if (mCGISr == null) { return 0; }
+            double rOutside = mCGISr.Outside ?? 0;
+            double rTemp = mCGISr.Temperature ?? 0;
+            double rPd = mCGISr.Pd ?? 0;
+            double rPdTevUhf = mCGISr.PdTevUhf ?? 0;
+            double rPdOnline = mCGISr.PdOnline ?? 0;
+            double rSF6Lost = mCGISr.SF6Lost ?? 0;
+            double rHis = mCGISr.HistoryMain ?? 0;
+            double rNumberYearOper = mCGISr.NumberYearOper ?? 0;
+            double maxScore = 9.9;
+
+            Console.WriteLine("maxScore= " + maxScore);
+            double? Outside = item.Outside;
+            double? Temperature = item.Temperature;
+            double? Pd = item.Pd;
+            double? PdTevUhf = item.PdTevUhf;
+            double? PdOnline = item.PdOnline;
+            double? SF6Lost = item.SF6Lost;
+            double? HistoryMain = item.HistoryMain;
+            double? NumberYearOper = item.NumberYearOper;
+
+            if (item.Outside == null) { rOutside = 0; Outside = 0; }
+            if (item.Temperature == null) { rTemp = 0; Temperature = 0; }
+            if (item.Pd == null) { rPd = 0; Pd = 0; }
+            if (item.PdTevUhf == null) { rPdTevUhf = 0; PdTevUhf = 0; }
+            if (item.PdOnline == null) { rPdOnline = 0; PdOnline = 0; }
+            if (item.SF6Lost == null) { rSF6Lost = 0; SF6Lost = 0; }
+            if (item.HistoryMain == null) { rHis = 0; HistoryMain = 0; }
+            if (item.NumberYearOper == null) { rNumberYearOper = 0; NumberYearOper = 0; }
+
+            double sumRate = rOutside + rTemp + rPd + rHis + rPdTevUhf + rPdOnline + rSF6Lost + rNumberYearOper;
+            Console.WriteLine("sumRate= " + sumRate);
+            double scorePPxR = maxScore / (3 * sumRate);
+            Console.WriteLine("scorePPxR= " + scorePPxR);
+            double Results = Math.Round(Convert.ToSingle(
+                (Outside * rOutside
+                + Temperature * rTemp
+                + Pd * rPd
+                + PdTevUhf * rPdTevUhf
+                + PdOnline * rPdOnline
+                + SF6Lost * rSF6Lost
+                + HistoryMain * rHis
+                + NumberYearOper * rNumberYearOper)
+                * scorePPxR), 2);
+            Console.WriteLine("Results= " + Results);
+            return Results;
+        }
+        public static double? MCGISScore23(MCGIS item)
+        {
+            return Math.Round(Convert.ToSingle(
+                item.RIsolate
+                + item.RContact
+                + item.TimeCut
+                + item.RIsolateClose
+                + item.RIsolateCut
+                + item.PurifyHuminitySF6
+                + item.SF6Decay
+                + item.LostSF6
+                + item.RIsolateOneWayMotor
+                + item.HightVoltageAC
+                + item.CutOnline
+                + item.RMotor
+                + item.SpeedFlowCut
+                + item.SF6Analysis
+                + item.PdAnalysis
+                ), 2);
+        }
+        public static double? MCHGISScore1(MCHGIS item, MCHGISr mCHGISr)
+        {
+            if (mCHGISr == null) { return 0; }
+            double rOutside = mCHGISr.Outside ?? 0;
+            double rTemp = mCHGISr.Temperature ?? 0;
+            double rPd = mCHGISr.Pd ?? 0;
+            double rSF6Lost = mCHGISr.SF6Lost ?? 0;
+            double rHis = mCHGISr.HistoryMain ?? 0;
+            double rNumberYearOper = mCHGISr.NumberYearOper ?? 0;
+            double maxScore = 9.9;
+
+            Console.WriteLine("maxScore= " + maxScore);
+            double? Outside = item.Outside;
+            double? Temperature = item.Temperature;
+            double? Pd = item.Pd;
+            double? SF6Lost = item.SF6Lost;
+            double? HistoryMain = item.HistoryMain;
+            double? NumberYearOper = item.NumberYearOper;
+
+            if (item.Outside == null) { rOutside = 0; Outside = 0; }
+            if (item.Temperature == null) { rTemp = 0; Temperature = 0; }
+            if (item.Pd == null) { rPd = 0; Pd = 0; }
+            if (item.SF6Lost == null) { rSF6Lost = 0; SF6Lost = 0; }
+            if (item.HistoryMain == null) { rHis = 0; HistoryMain = 0; }
+            if (item.NumberYearOper == null) { rNumberYearOper = 0; NumberYearOper = 0; }
+
+            double sumRate = rOutside + rTemp + rPd + rHis + rSF6Lost + rNumberYearOper;
+            Console.WriteLine("sumRate= " + sumRate);
+            double scorePPxR = maxScore / (3 * sumRate);
+            Console.WriteLine("scorePPxR= " + scorePPxR);
+            double Results = Math.Round(Convert.ToSingle(
+                (Outside * rOutside
+                + Temperature * rTemp
+                + Pd * rPd
+                + SF6Lost * rSF6Lost
+                + HistoryMain * rHis
+                + NumberYearOper * rNumberYearOper)
+                * scorePPxR), 2);
+            Console.WriteLine("Results= " + Results);
+            return Results;
+        }
+        public static double? MCHGISScore23(MCHGIS item)
+        {
+            return Math.Round(Convert.ToSingle(
+                item.RIsolate
+                + item.RContact
+                + item.TimeCut
+                + item.RIsolateClose
+                + item.RIsolateCut
+                + item.PurifyHuminitySF6
+                + item.SF6Decay
+                + item.LostSF6
+                + item.RIsolateMotor
+                + item.HightVoltageAC
+                + item.CutOnline
+                + item.RMotor
+                + item.SpeedFlowCut
+                + item.SF6Analysis
+                + item.PdAnalysis
+                ), 2);
+        }
+        public static double? MCSF6Score1(MCSF6 item, MCSF6r mCSF6r)
+        {
+            if (mCSF6r == null) { return 0; }
+            double rOutside = mCSF6r.Outside ?? 0;
+            double rTemp = mCSF6r.Temperature ?? 0;
+            double rPd = mCSF6r.Pd ?? 0;
+            double rSF6Lost = mCSF6r.SF6Lost ?? 0;
+            double rHis = mCSF6r.HistoryMain ?? 0;
+            double rNumberYearOper = mCSF6r.NumberYearOper ?? 0;
+            double maxScore = 9.9;
+
+            Console.WriteLine("maxScore= " + maxScore);
+            double? Outside = item.Outside;
+            double? Temperature = item.Temperature;
+            double? Pd = item.Pd;
+            double? SF6Lost = item.SF6Lost;
+            double? HistoryMain = item.HistoryMain;
+            double? NumberYearOper = item.NumberYearOper;
+
+            if (item.Outside == null) { rOutside = 0; Outside = 0; }
+            if (item.Temperature == null) { rTemp = 0; Temperature = 0; }
+            if (item.Pd == null) { rPd = 0; Pd = 0; }
+            if (item.SF6Lost == null) { rSF6Lost = 0; SF6Lost = 0; }
+            if (item.HistoryMain == null) { rHis = 0; HistoryMain = 0; }
+            if (item.NumberYearOper == null) { rNumberYearOper = 0; NumberYearOper = 0; }
+
+            double sumRate = rOutside + rTemp + rPd + rHis + rSF6Lost + rNumberYearOper;
+            Console.WriteLine("sumRate= " + sumRate);
+            double scorePPxR = maxScore / (3 * sumRate);
+            Console.WriteLine("scorePPxR= " + scorePPxR);
+            double Results = Math.Round(Convert.ToSingle(
+                (Outside * rOutside
+                + Temperature * rTemp
+                + Pd * rPd
+                + SF6Lost * rSF6Lost
+                + HistoryMain * rHis
+                + NumberYearOper * rNumberYearOper)
+                * scorePPxR), 2);
+            Console.WriteLine("Results= " + Results);
+            return Results;
+        }
+        public static double? MCSF6Score23(MCSF6 item)
+        {
+            return Math.Round(Convert.ToSingle(
+                item.RIsolate
+                + item.RContact
+                + item.TimeCut
+                + item.RIsolateClose
+                + item.RIsolateCut
+                + item.PurifyHuminitySF6
+                + item.SF6Decay
+                + item.LostSF6
+                + item.RIsolateOneWayMotor
+                + item.HightVoltageAC
+                + item.CutOnline
+                + item.RMotor
+                + item.SpeedFlowCut
+                + item.SF6Analysis
+                ), 2);
+        }
     }
 }

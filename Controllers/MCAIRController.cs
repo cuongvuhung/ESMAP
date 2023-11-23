@@ -61,6 +61,8 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCAIRr? mCAIRr = await (from rec in _context.MCAIRrs select rec).FirstOrDefaultAsync();
+
                 MCAIR? itemExist = await (from rec in _context.MCAIRs
                                           where 
                                         rec.DateTest == item.DateTest
@@ -71,6 +73,9 @@ namespace CBM_API.Controllers
                 {
                     item.CreatedAt = DateTime.Now;
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.ScoreLevel1 = Calc.MCAIRScore1(item, mCAIRr);
+                    item.ScoreLevel1 = Calc.MCAIRScore23(item);
+                    item.TotalScore = Calc.MCAIRScore1(item, mCAIRr) + Calc.MCAIRScore23(item);
                     _context.MCAIRs.Add(item);
                     _context.SaveChanges();
                     return Ok(item);
@@ -89,6 +94,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCAIRr? mCAIRr = await (from rec in _context.MCAIRrs select rec).FirstOrDefaultAsync();
                 MCAIR? itemExist = await (from rec in _context.MCAIRs
                                           where rec.Id == item.Id
                                             select rec).FirstOrDefaultAsync();
@@ -120,14 +126,14 @@ namespace CBM_API.Controllers
                     itemExist.PdOnlineAnalysis = item.PdOnlineAnalysis;
                     itemExist.CutOnline = item.CutOnline;
                     itemExist.SpeedFlowCut = item.SpeedFlowCut;
-                    itemExist.ScoreLevel1 = item.ScoreLevel1;
-                    itemExist.ScoreLevel23 = item.ScoreLevel23;
-                    itemExist.TotalScore = item.TotalScore;
+                    itemExist.ScoreLevel1 = Calc.MCAIRScore1(item, mCAIRr); 
+                    itemExist.ScoreLevel23 = Calc.MCAIRScore23(item);
+                    itemExist.TotalScore = Calc.MCAIRScore1(item, mCAIRr) + Calc.MCAIRScore23(item);
                     itemExist.Note = item.Note;
                     itemExist.ReviewETC = item.ReviewETC;
                     itemExist.Img = item.Img;
                     _context.SaveChanges();
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)

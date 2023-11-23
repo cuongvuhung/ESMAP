@@ -61,6 +61,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCSF6r? mCSF6r = await (from rec in _context.MCSF6rs select rec).FirstOrDefaultAsync();
                 MCSF6? itemExist = await (from rec in _context.MCSF6s
                                           where 
                                         rec.DateTest == item.DateTest
@@ -71,6 +72,9 @@ namespace CBM_API.Controllers
                 {
                     item.CreatedAt = DateTime.Now;
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    item.ScoreLevel1 = Calc.MCSF6Score1(item, mCSF6r);
+                    item.ScoreLevel23 = Calc.MCSF6Score23(item);
+                    item.TotalScore = Calc.MCSF6Score1(item, mCSF6r) + Calc.MCSF6Score23(item);
                     _context.MCSF6s.Add(item);
                     _context.SaveChanges();
                     return Ok(item);
@@ -89,6 +93,7 @@ namespace CBM_API.Controllers
         {
             try
             {
+                MCSF6r? mCSF6r = await (from rec in _context.MCSF6rs select rec).FirstOrDefaultAsync();
                 MCSF6? itemExist = await (from rec in _context.MCSF6s
                                           where rec.Id == item.Id
                                             select rec).FirstOrDefaultAsync();
@@ -123,14 +128,14 @@ namespace CBM_API.Controllers
                     itemExist.RMotor = item.RMotor;
                     itemExist.SpeedFlowCut = item.SpeedFlowCut;
                     itemExist.SF6Analysis = item.SF6Analysis;
-                    itemExist.ScoreLevel1 = item.ScoreLevel1;
-                    itemExist.ScoreLevel23 = item.ScoreLevel23;
-                    itemExist.TotalScore = item.TotalScore;
+                    itemExist.ScoreLevel1 = Calc.MCSF6Score1(item, mCSF6r);
+                    itemExist.ScoreLevel23 = Calc.MCSF6Score23(item);
+                    itemExist.TotalScore = Calc.MCSF6Score1(item, mCSF6r) + Calc.MCSF6Score23(item);
                     itemExist.Note = item.Note;
                     itemExist.ReviewETC = item.ReviewETC;
                     itemExist.Img = item.Img;
                     _context.SaveChanges();
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)
