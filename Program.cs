@@ -26,7 +26,7 @@ public class Program
 
         builder.Services.AddMinio(option =>
         {
-            option.Endpoint = $"{builder.Configuration["Minio:Host"]}:{builder.Configuration["Minio:Port"]}";
+            option.Endpoint = $"{builder.Configuration["Minio:Host"]}";
             option.AccessKey = $"{builder.Configuration["Minio:AccessKey"]}";
             option.SecretKey = $"{builder.Configuration["Minio:SecretKey"]}";
             option.ConfigureClient(client =>
