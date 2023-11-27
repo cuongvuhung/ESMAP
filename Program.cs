@@ -73,7 +73,7 @@ public class Program
                                         "https://cbm.npcetc.vn",
                                         "http://cbm.npcetc.vn",
                                         "https://localhost:5174",
-                                        "http://localhost:5174"
+                                        "http://localhost:5174",
                                         "*")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
