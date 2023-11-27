@@ -70,6 +70,7 @@ public class Program
                                         "http://localhost:14886",
                                         "http://localhost:14886",
                                         "https://localhost:5173",
+                                        "http://localhost:5173",
                                         "https://cbm.npcetc.vn",
                                         "http://cbm.npcetc.vn",
                                         "https://localhost:5174",
