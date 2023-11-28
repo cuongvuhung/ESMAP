@@ -25,16 +25,16 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(string? name,int? pageSize, int? pageNumber)
         {
             try
             {
-                var item = await (from account in _context.Accounts
+                if (name == null) { name = string.Empty; }
+                var item = await PaginatedList<Account>.CreateAsync((from account in _context.Accounts
                                       where account.DeletedAt == null
                                       select account)
                                       .Include(r => r.Roles)
-                                      .Include(d => d.Department)
-                                      .ToListAsync();
+                                      .Include(d => d.Department),pageNumber?? 1, pageSize?? 10);
                 
                 return Ok(item);
             }
@@ -169,7 +169,7 @@ namespace CBM_API.Controllers
                             }
                         }
                     }
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)
