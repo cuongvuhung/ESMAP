@@ -25,18 +25,25 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem(string? name,int? pageSize, int? pageNumber)
+        public async Task<IActionResult> SearchItem(int? id, string? name,int? pageSize, int? pageNumber)
         {
             try
             {
-                if (name == null) { name = string.Empty; }
+                if (name == null) { name = " "; }
                 var item = await PaginatedList<Account>.CreateAsync((from account in _context.Accounts
-                                      where account.DeletedAt == null
-                                      select account)
+                                                                     where account.DeletedAt == null
+                                                                     && (name == " " || account.FullName.Contains(name))
+                                                                     && (id == null || account.Id == id)
+                                                                     select account)
                                       .Include(r => r.Roles)
-                                      .Include(d => d.Department),pageNumber?? 1, pageSize?? 10);
-                
-                return Ok(item);
+                                      .Include(d => d.Department), pageNumber ?? 1, pageSize ?? 10);
+
+                return Ok(new 
+                { 
+                    totalItems = item.TotalItems,
+                    totalPages = item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {

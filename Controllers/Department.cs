@@ -10,6 +10,7 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Minio.DataModel;
+using System.Drawing.Printing;
 
 namespace CBM_API.Controllers
 {
@@ -24,16 +25,24 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem()
+        public async Task<IActionResult> SearchItem(int? id, string? name, int? pageSize, int? pageNumber)
         {
             try
             {
-                var item = await (from department in _context.Departments
-                                  where department.DeletedAt == null
-                                  select department)                                      
-                                      .ToListAsync();
+                if (name == null) { name = " "; }
+                var item = await PaginatedList<Department>.CreateAsync((from rec in _context.Departments
+                                                                     where rec.DeletedAt == null
+                                                                     && (name == " " || rec.Description.Contains(name))
+                                                                     && (id == null || rec.Id == id)
+                                                                     select rec).Include(x=>x.Accounts)
+                                                                    , pageNumber ?? 1, pageSize ?? 10);
 
-                return Ok(item);
+                return Ok(new
+                {
+                    totalItems = item.TotalItems,
+                    totalPages = item.TotalPages,
+                    items = item
+                });
             }
             catch (Exception e)
             {
