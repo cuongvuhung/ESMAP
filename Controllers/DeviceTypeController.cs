@@ -24,14 +24,20 @@ namespace CBM_API.Controllers
         }
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> SearchItem(string? name, int? pageNumber, int? pageSize)
+        public async Task<IActionResult> SearchItem(int? manufactureId, string? name, int? pageNumber, int? pageSize)
         {
             if (name == null) { name = string.Empty; }
+            if (manufactureId == null) {  manufactureId = 0; }
+            Manufacture? manufacture = await (from rec in _context.Manufactures 
+                                             where rec.Id == manufactureId
+                                             select rec).FirstOrDefaultAsync();
+            //if (manufacture == null) { manufacture = new Manufacture(0, "name"); }
             try
             {
                 var item = await PaginatedList<DeviceType>.CreateAsync((from rec in _context.DeviceTypes
                                                                         where rec.DeletedAt == null
                                                                         && (name == string.Empty || rec.Name == name)
+                                                                        && (manufactureId == 0 || rec.Manufactures.Contains(manufacture))
                                                                         select rec),
                                                                         pageNumber ?? 1, pageSize ?? 10);
                 return Ok(new
