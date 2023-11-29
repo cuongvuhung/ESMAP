@@ -33,7 +33,7 @@ namespace CBM_API.Controllers
                                     (from rec in _context.Provinces
                                   where rec.DeletedAt == null
                                   && (name == string.Empty || rec.Name == name)
-                                  select rec).Include(x=>x.Substations)                                      
+                                  select rec)                                      
                                       ,pageNumber ?? 1,pageSize ?? 10);
                 return Ok(new 
                 {

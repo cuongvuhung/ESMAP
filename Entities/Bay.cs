@@ -12,7 +12,7 @@ namespace CBM_API.Entities
         public string Name { get; set; }
         public int SubstationId { get; set; }
         public Substation? Substation { get; set; }
-        public List<Device>? Devices { get; set; }
+        [JsonIgnore] public List<Device>? Devices { get; set; }
         
 
         public Bay(int id, string name)//,  DateTime? deletedAt)

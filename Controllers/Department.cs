@@ -34,7 +34,7 @@ namespace CBM_API.Controllers
                                                                      where rec.DeletedAt == null
                                                                      && (name == " " || rec.Description.Contains(name))
                                                                      && (id == null || rec.Id == id)
-                                                                     select rec).Include(x=>x.Accounts)
+                                                                     select rec)
                                                                     , pageNumber ?? 1, pageSize ?? 10);
 
                 return Ok(new

@@ -13,8 +13,8 @@ namespace CBM_API.Entities
         public string Name { get; set; }        
         public int? DeviceTypeId { get; set; }
         public DeviceType? DeviceType { get; set; }
-        public List<Manufacture>? Manufactures { get; set; }
-        public List<Device>? Devices { get; set; }
+        [JsonIgnore] public List<Manufacture>? Manufactures { get; set; }
+        [JsonIgnore] public List<Device>? Devices { get; set; }
 
         public Model(int id, string name, int deviceTypeId)//,  DateTime? deletedAt)
         {

@@ -33,10 +33,10 @@ namespace CBM_API.Controllers
                                                                          where rec.DeletedAt == null
                                                                          && (name==string.Empty ||  rec.Name==name)                                                                         
                                                                          select rec)
-                                                                         .Include(x=>x.DeviceTypes)
-                                                                         .Include(y=>y.Models)
-                                                                         .Include(z=>z.Devices),
-                                                                         pageNumber?? 1,pageSize?? 10);
+                                                                         //.Include(x=>x.DeviceTypes)
+                                                                         //.Include(y=>y.Models)
+                                                                         //.Include(z=>z.Devices)
+                                                                         ,pageNumber?? 1,pageSize?? 10);
                                       
 
                 return Ok(new
