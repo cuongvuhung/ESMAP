@@ -35,8 +35,7 @@ namespace CBM_API.Controllers
                                                                  && (name == string.Empty || rec.Name == name)
                                                                  && (substationId == 0 || rec.SubstationId == substationId)
                                                                  select rec)
-                                                                 .Include(x=>x.Substation).ThenInclude(y=>y.Province)
-                                                                 .Include(z=>z.Devices), 
+                                                                 .Include(x=>x.Substation),
                                                                  pageNumber ?? 1, pageSize ?? 10);
                 return Ok(new
                 { 

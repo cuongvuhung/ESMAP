@@ -32,9 +32,7 @@ namespace CBM_API.Controllers
                 var item = await PaginatedList<DeviceType>.CreateAsync((from rec in _context.DeviceTypes
                                                                         where rec.DeletedAt == null
                                                                         && (name == string.Empty || rec.Name == name)
-                                                                        select rec)
-                                                                        .Include(x => x.Manufactures)
-                                                                        .Include(y => y.Models),
+                                                                        select rec),
                                                                         pageNumber ?? 1, pageSize ?? 10);
                 return Ok(new
                 {

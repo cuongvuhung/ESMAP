@@ -92,6 +92,10 @@ namespace CBM_API
 
             modelBuilder.Entity<Model>()
                 .HasMany(d => d.Devices);
+           // modelBuilder.Entity<Model>().HasOne
+            //   (d => d.DeviceType);
+
+
 
             modelBuilder.Entity<Device>()
                 .HasMany(d => d.BDAs);

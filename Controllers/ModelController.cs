@@ -40,9 +40,9 @@ namespace CBM_API.Controllers
                                                                    && (manuFactureId ==0 || rec.Manufactures.Contains(manufacture?? new Manufacture()))
                                                                    && (deviceTypeId == 0 || rec.DeviceTypeId == deviceTypeId)
                                                                    select rec)
-                                                                   .Include(x=>x.Manufactures)
-                                                                   .Include(y=>y.DeviceType),
-                                                                   pageNumber ?? 1, pageSize ?? 10);
+                                                                   //.Include(x=>x.Manufactures)
+                                                                   .Include(y=>y.DeviceType)
+                                                                   ,pageNumber ?? 1, pageSize ?? 10);
                 return Ok(new 
                 { 
                     totalItems = item.TotalItems,

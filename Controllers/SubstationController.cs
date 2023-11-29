@@ -36,7 +36,7 @@ namespace CBM_API.Controllers
                                      where rec.DeletedAt == null
                                      && (name == string.Empty || rec.Name == name)
                                      && (provinceId == 0 || rec.ProvinceId == provinceId)
-                                     select rec).Include(x => x.Province).Include(y=>y.Bays)
+                                     select rec).Include(x => x.Province)
                                      
                                       , pageNumber ?? 1, pageSize ?? 10);
                 return Ok(new

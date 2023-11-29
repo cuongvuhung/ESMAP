@@ -10,11 +10,11 @@ namespace CBM_API.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }        
+        public string Name { get; set; }
 
-        public List<DeviceType>? DeviceTypes { get; set; }
-        public List<Model>? Models { get; set; }
-        public List<Device>? Devices { get; set; }
+        [JsonIgnore] public List<DeviceType>? DeviceTypes { get; set; }
+        [JsonIgnore] public List<Model>? Models { get; set; }
+        [JsonIgnore] public List<Device>? Devices { get; set; }
 
 
         public Manufacture(int id, string name)//,  DateTime? deletedAt)

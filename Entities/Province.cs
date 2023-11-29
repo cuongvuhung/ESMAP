@@ -10,7 +10,7 @@ namespace CBM_API.Entities
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Substation>? Substations { get; set; }
+        [JsonIgnore] public List<Substation>? Substations { get; set; }
         
         public Province(int id, string name)//,  DateTime? deletedAt)
         {

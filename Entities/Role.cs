@@ -10,7 +10,7 @@ namespace CBM_API.Entities
         [Key]
         public int Id { get; set; }               
         public string Name { get; set; }
-        public List<Account>? Accounts { get; } = new();
+        [JsonIgnore] public List<Account>? Accounts { get; } = new();
         public Role(int id, string name)
         {
             Id = id;
