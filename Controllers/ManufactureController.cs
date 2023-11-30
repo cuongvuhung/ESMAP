@@ -59,6 +59,23 @@ namespace CBM_API.Controllers
         }
 
         //[Authorize(Roles = "admin")]
+        [HttpGet("All")]
+        public async Task<IActionResult> SearchAllItem()
+        {
+            try
+            {
+                var item = await (from rec in _context.Manufactures
+                                  where rec.DeletedAt == null
+                                  select rec).ToListAsync();
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        //[Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> AddItem([FromQuery]string deviceTypeIdString,[FromBody]Manufacture item)
         {
