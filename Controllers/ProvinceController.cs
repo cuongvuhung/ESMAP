@@ -37,8 +37,8 @@ namespace CBM_API.Controllers
                                       ,pageNumber ?? 1,pageSize ?? 10);
                 return Ok(new 
                 {
-                    totalItem = item.TotalItems,
-                    totalPage = item.TotalPages,
+                    totalItems = item.TotalItems,
+                    totalPages = item.TotalPages,
                     items = item
                 });
             }
@@ -47,7 +47,22 @@ namespace CBM_API.Controllers
                 return BadRequest(e.Message);
             }
         }
-
+        //[Authorize(Roles = "admin")]
+        [HttpGet("All")]
+        public async Task<IActionResult> SearchAllItem()
+        {
+            try
+            {
+                var item = await (from rec in _context.Provinces
+                                     where rec.DeletedAt == null
+                                     select rec).ToListAsync();
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
         //[Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> AddItem(Province item)

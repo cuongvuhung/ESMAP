@@ -49,7 +49,23 @@ namespace CBM_API.Controllers
                 return BadRequest(e.Message);
             }
         }
-
+        //[Authorize(Roles = "admin")]
+        [HttpGet("All")]
+        public async Task<IActionResult> SearchAllItem(int? substationId)
+        {
+            try
+            {
+                var item = await (from rec in _context.Bays
+                                  where rec.DeletedAt == null
+                                  && rec.SubstationId == substationId
+                                  select rec).ToListAsync();
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
         //[Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> AddItem(Bay item)
