@@ -58,7 +58,7 @@ namespace CBM_API.Controllers
 
         //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> AddItem([FromBody]Model item, [FromQuery]string manufactureIdString)
+        public async Task<IActionResult> AddItem([FromBody]Model item, [FromQuery]string? manufactureIdString)
         {
             try
             {
