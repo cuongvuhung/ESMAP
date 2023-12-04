@@ -81,7 +81,7 @@ namespace CBM_API.Controllers
         {
             try
             {
-                var deviceTypeIds = deviceTypeIdString.Split(' ');
+                
                 Manufacture? itemExist = await (from rec in _context.Manufactures
                                             where rec.Name == item.Name
                                        select rec).FirstOrDefaultAsync();
@@ -92,16 +92,20 @@ namespace CBM_API.Controllers
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.Manufactures.Add(item);
                     _context.SaveChanges();
-                    foreach (var deviceTypeId in deviceTypeIds)
+                    if (deviceTypeIdString != null)
                     {
-                        try
+                        var deviceTypeIds = deviceTypeIdString.Split(' ');
+                        foreach (var deviceTypeId in deviceTypeIds)
                         {
-                            _context.ManufactureDeviceType.Add(new ManufactureDeviceType(0, Convert.ToInt32(deviceTypeId), item.Id));
-                            _context.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            return BadRequest(ex.Message);
+                            try
+                            {
+                                _context.ManufactureDeviceType.Add(new ManufactureDeviceType(0, Convert.ToInt32(deviceTypeId), item.Id));
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                return BadRequest(ex.Message);
+                            }
                         }
                     }
                     return Ok(item);
