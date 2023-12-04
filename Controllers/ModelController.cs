@@ -65,8 +65,6 @@ namespace CBM_API.Controllers
                 Model? itemExist = await (from rec in _context.Models
                                           where rec.Name == item.Name
                                           select rec).FirstOrDefaultAsync();
-                var manufactureIds = manufactureIdString.Split(' ');
-                
                 if (itemExist != null) { return BadRequest(); }
                 else
                 {
@@ -74,16 +72,20 @@ namespace CBM_API.Controllers
                     item.CreatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
                     _context.Models.Add(item);
                     _context.SaveChanges();
-                    foreach (var manufactureId in manufactureIds) 
+                    if (manufactureIdString != null)
                     {
-                        try
+                        var manufactureIds = manufactureIdString.Split(' ');
+                        foreach (var manufactureId in manufactureIds)
                         {
-                            _context.ManufactureModel.Add(new ManufactureModel(0, item.Id, Convert.ToInt32(manufactureId)));
-                            _context.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            return BadRequest(ex.Message);
+                            try
+                            {
+                                _context.ManufactureModel.Add(new ManufactureModel(0, item.Id, Convert.ToInt32(manufactureId)));
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                return BadRequest(ex.Message);
+                            }
                         }
                     }
                     return Ok(item);
@@ -112,18 +114,24 @@ namespace CBM_API.Controllers
                 }
                 else
                 {
-                    if (manufactureIdString != null) 
+                    
+                    itemExist.UpdatedAt = DateTime.Now;
+                    itemExist.UpdatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
+                    itemExist.Name = item.Name;
+                    itemExist.DeviceTypeId = item.DeviceTypeId;
+                    
+                    if (manufactureIdString != null)
                     {
                         var manufactureIds = manufactureIdString.Split(' ');
                         List<ManufactureModel> manufactureModels = await (from rec in _context.ManufactureModel
                                                                           where rec.ModelId == item.Id
                                                                           select rec).ToListAsync();
-                        foreach (var manufactureModel in manufactureModels) 
+                        foreach (var manufactureModel in manufactureModels)
                         {
                             _context.ManufactureModel.Remove(manufactureModel);
                             _context.SaveChanges();
                         }
-                        
+
                         foreach (var manufactureId in manufactureIds)
                         {
                             try
@@ -135,15 +143,11 @@ namespace CBM_API.Controllers
                             {
                                 return BadRequest(ex.Message);
                             }
-                            
+
                         }
                     }
-                    itemExist.UpdatedAt = DateTime.Now;
-                    itemExist.UpdatedBy = User.Claims.FirstOrDefault(ac => ac.Type == "Name")?.Value;
-                    itemExist.Name = item.Name;
-                    itemExist.DeviceTypeId = item.DeviceTypeId;
                     _context.SaveChanges();
-                    return Ok(item);
+                    return Ok(itemExist);
                 }
             }
             catch (Exception e)
