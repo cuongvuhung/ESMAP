@@ -6,25 +6,21 @@ using System.Text.Json.Serialization;
 
 namespace ESMAP.Entities
 {
-    [Table("Devices")]
-    public class Device
+    [Table("StationLine")]
+    public class StationLine
     {
         [Key]
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public int? StationId { get; set; } 
-        public Station? Station { get; }
-        public int? TypId { get; set; } 
-        public Typ? Typ { get; }
+        public int StationId { get; set; }
+        public int LineId { get; set; }
 
-
-        public Device(string? name, int? stationId, int? typId)
+        public StationLine(int stationId, int lineId)
         {
-            Name = name;
             StationId = stationId;
-            TypId = typId;
+            LineId = lineId;
         }
-        public Device()
+
+        public StationLine()
         {
         }
         // JsonIgnore 

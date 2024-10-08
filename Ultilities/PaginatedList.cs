@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CBM_API.Ultilities
+namespace ESMAP.Ultilities
 {
     public class PaginatedList<T> : List<T>
     {

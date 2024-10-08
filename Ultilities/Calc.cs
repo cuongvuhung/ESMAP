@@ -1,8 +1,8 @@
-﻿using CBM_API.Entities;
+﻿/*using ESMAP.Entities;
 using Microsoft.EntityFrameworkCore;
 using Minio;
 
-namespace CBM_API.Ultilities
+namespace ESMAP.Ultilities
 {
     public class Calc
     {
@@ -593,4 +593,4 @@ namespace CBM_API.Ultilities
                 ), 2);
         }
     }
-}
+}*/

@@ -5,10 +5,10 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-using CBM_API.Entities;
+using ESMAP.Entities;
 using Minio.DataModel;
 
-namespace CBM_API.Ultilities
+namespace ESMAP.Ultilities
 {
     public class Crypto
     {
@@ -56,7 +56,7 @@ namespace CBM_API.Ultilities
             }
         }
         
-        public static string GenerateJwt(Account acc)
+        /*public static string GenerateJwt(Account acc)
         {
             // 1. Tao key để thực hiện ký trên jwt
             var config = new ConfigurationBuilder()
@@ -92,7 +92,7 @@ namespace CBM_API.Ultilities
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
-        }
+        }*/
 
     }
 }
